@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TeleDoctor | Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Poppins:wght@600;700&display=swap"
+        rel="stylesheet">
+
+
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #007bff;
+            --secondary: #00c6ff;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--dark);
+        }
+
+        /* Sidebar Toggle (Hamburger) */
+        .sidebar-toggle {
+            display: none;
+            /* Hidden on desktop */
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1100;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Top-Right Login/Logout Buttons */
+        .login-btn-top,
+        .logout-btn-top {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: transparent;
+            color: var(--primary);
+            border: none;
+            padding: 0;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            z-index: 1050;
+            cursor: pointer;
+        }
+
+        .login-btn-top:hover,
+        .logout-btn-top:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        .logout-btn-top {
+            color: #dc3545;
+        }
+
+        .logout-btn-top:hover {
+            color: #c82333;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            transition: left 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .sidebar-header h2 i {
+            margin-right: 8px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-item i {
+            margin-right: 12px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar-item:hover,
+        .sidebar-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 3px solid white;
+        }
+
+        .main {
+            margin-left: 240px;
+            /* Space for desktop sidebar */
+            flex: 1;
+            transition: margin-left 0.3s ease;
+            padding: 40px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Main Content Hero Section */
+        .hero {
+            text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #e0f7fa 0%, #ffffff 100%);
+            border-bottom: 5px solid var(--primary);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px;
+            margin-top: 40px;
+            /* Add space from top buttons on mobile */
+        }
+
+        .hero img {
+            max-width: 180px;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            border: 3px solid var(--primary);
+            background: white;
+            padding: 5px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 25px;
+            color: #555;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            border-bottom: 4px solid var(--primary);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-card i {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .feature-card h3 {
+            font-size: 1.6rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .feature-card p {
+            font-size: 1rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: 40px;
+        }
+
+        footer a {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+
+        footer a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        /* --- Responsive Styles --- */
+        @media (max-width: 768px) {
+            .sidebar-toggle {
+                display: block;
+                /* Show hamburger toggle on mobile */
+            }
+
+            .sidebar {
+                left: -240px;
+                /* Hide sidebar off-screen */
+            }
+
+            .sidebar.active {
+                left: 0;
+                /* Slide sidebar into view */
+            }
+
+            .main {
+                margin-left: 0;
+                /* No margin for main content on mobile */
+                padding: 20px 15px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .features-grid {
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <button class="sidebar-toggle">☰</button>
+    <a href="login.html" id="loginBtnTop" class="login-btn-top">Login</a>
+    <button id="logoutBtnTop" class="logout-btn-top" style="display:none;">Logout</button>
+
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-heartbeat"></i> TeleDoctor</h2>
+        </div>
+        <div class="sidebar-nav">
+            <a href="index.html" class="sidebar-item active"><i class="fas fa-home"></i> Home</a>
+            <a href="clinics.html" class="sidebar-item"><i class="fas fa-clinic-medical"></i> Clinics</a>
+            <a href="labs.html" class="sidebar-item"><i class="fas fa-flask"></i> Laboratories</a>
+            <a href="pharmacies.html" class="sidebar-item"><i class="fas fa-pills"></i> Pharmacies</a>
+            <a href="about.html" class="sidebar-item"><i class="fas fa-info-circle"></i> About Us</a>
+            <a href="contacts.html" class="sidebar-item"><i class="fas fa-envelope"></i> Contact Us</a>
+            <a href="telebirr_payment.html" class="sidebar-item"><i class="fas fa-university"></i> Telebirr</a>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="hero">
+            <img src="https://placehold.co/180x180/007bff/ffffff?text=TeleDoctor" alt="TeleDoctor Logo">
+            <h1>Welcome to TeleDoctor!</h1>
+            <p>Your AI-powered platform for managing clinics, doctors, labs, and pharmacies.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-user-md"></i>
+                <h3>AI Diagnosis</h3>
+                <p>Support doctors with intelligent AI-based diagnostics that enhance accuracy and speed of medical
+                    assessments.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-headset"></i>
+                <h3>Remote Consults</h3>
+                <p>Access healthcare providers remotely and securely from the comfort of your home or office.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-comments"></i>
+                <h3>Language Support</h3>
+                <p>Multilingual access for both doctors and patients, breaking down communication barriers.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-file-medical"></i>
+                <h3>Digital Records</h3>
+                <p>Securely store and access medical records anytime, anywhere with our encrypted system.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Services</a>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Contact</a>
+        </div>
+        <p>&copy; 2025 TeleDoctor. All rights reserved.</p>
+        <p>Making healthcare accessible for everyone</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebarToggle = document.querySelector('.sidebar-toggle');
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main');
+
+            // Dummy login state check for demonstration
+            const isLoggedIn = false; // Change to true to see the "Logout" button
+            const loginBtn = document.getElementById('loginBtnTop');
+            const logoutBtn = document.getElementById('logoutBtnTop');
+
+            if (isLoggedIn) {
+                loginBtn.style.display = 'none';
+                logoutBtn.style.display = 'block';
+            } else {
+                loginBtn.style.display = 'block';
+                logoutBtn.style.display = 'none';
+            }
+
+            if (sidebarToggle && sidebar) {
+                sidebarToggle.addEventListener('click', function () {
+                    sidebar.classList.toggle('active');
+                });
+            }
+
+            // Close sidebar when clicking outside on mobile
+            if (mainContent && sidebar) {
+                mainContent.addEventListener('click', function () {
+                    if (sidebar.classList.contains('active') && window.innerWidth <= 768) {
+                        sidebar.classList.remove('active');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

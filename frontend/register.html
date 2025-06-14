@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TeleDoctor | Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light p-4">
+    <div class="container">
+        <h1 class="text-center mb-4">User Registration</h1>
+        <form id="registrationForm" class="card shadow p-4">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="fullName" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="fullName" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" required>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="tel" class="form-control" id="phone" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" required>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="type" class="form-label">Type</label>
+                    <select class="form-select" id="type" required>
+                        <option value="">Select</option>
+                        <option value="Doctor">Doctor</option>
+                        <option value="Interpreter">Interpreter</option>
+                        <option value="Patient">Patient</option>
+                        <option value="Clinic">Clinic</option>
+                        <option value="Lab">Lab</option>
+                        <option value="Pharmacy">Pharmacy</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="registrationNumber" class="form-label">Registration Number</label>
+                    <input type="text" class="form-control" id="registrationNumber" required>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="faydaId" class="form-label">Fayda ID</label>
+                <input type="text" class="form-control" id="faydaId" placeholder="Enter Fayda ID">
+                <div class="form-check mt-2">
+                    <input class="form-check-input" type="checkbox" id="faydaApplied">
+                    <label class="form-check-label" for="faydaApplied">
+                        I have applied for Fayda ID but not received yet.
+                    </label>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Address</label>
+                <div class="row">
+                    <div class="col-md-3 mb-2">
+                        <input type="text" class="form-control" id="city" placeholder="City" required>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <input type="text" class="form-control" id="subCity" placeholder="Sub-City" required>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <input type="text" class="form-control" id="woreda" placeholder="Woreda" required>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <input type="text" class="form-control" id="kebele" placeholder="Kebele" required>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="workingHours" class="form-label">Working Hours (Optional)</label>
+                <input type="text" class="form-control" id="workingHours">
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Register</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('Form submitted!'); // replace with Firebase logic
+        });
+    </script>
+</body>
+
+</html>

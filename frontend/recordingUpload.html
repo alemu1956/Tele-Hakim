@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TeleDoctor | Upload Recording</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Poppins:wght@600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+    <div class="container py-5">
+        <h1 class="text-center mb-4"><i class="fas fa-upload me-2"></i>Upload Recording</h1>
+
+        <div class="card p-4 shadow text-center">
+            <input type="file" id="audioFile" accept="audio/*" class="form-control mb-3">
+            <button class="btn btn-primary w-100" onclick="uploadAudio()">Upload and Transcribe</button>
+        </div>
+
+        <div id="result" class="mt-4"></div>
+    </div>
+
+    <script>
+        function uploadAudio() {
+            const file = document.getElementById('audioFile').files[0];
+            if (!file) {
+                alert('Please select a file');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('audio', file);
+
+            fetch('/upload-audio', {
+                method: 'POST',
+                body: formData
+            })
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('result').innerHTML = `<h4>Transcription:</h4><p>${data.transcription}</p>`;
+                    alert("Transcription done. Proceed to doctor review.");
+                    window.location.href = '/doctorReview.html';
+                })
+                .catch(err => {
+                    alert('Error uploading file');
+                    console.error(err);
+                });
+        }
+    </script>
+
+</body>
+
+</html>
