@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TeleDoctor | Clinics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- External Libraries -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Inline CSS -->
+    <style>
+        /* General styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== SIDEBAR STYLES ===== */
+        .sidebar {
+            width: 240px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, #007bff 0%, #00c6ff 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            transition: left 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .sidebar-item {
+            display: block;
+            padding: 12px 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar-item i {
+            margin-right: 12px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar-item:hover,
+        .sidebar-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 3px solid white;
+        }
+
+        .dropdown-btn {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+            position: relative;
+            z-index: 10;
+        }
+
+        .dropdown-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 3px solid white;
+        }
+
+        .dropdown-btn i {
+            margin-right: 12px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .dropdown-menu {
+            background-color: rgba(0, 0, 0, 0.15);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            position: relative;
+            z-index: 9;
+        }
+
+        .dropdown-menu.show {
+            max-height: 500px;
+        }
+
+        .dropdown-menu a {
+            padding: 10px 20px 10px 50px;
+            font-size: 15px;
+        }
+
+        .sidebar-footer {
+            padding: 0 20px 20px;
+            margin-top: auto;
+            /* Pushes the footer to the bottom */
+        }
+
+        .login-btn {
+            display: block;
+            width: 100%;
+            background-color: white;
+            color: #007bff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px;
+            text-align: center;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+            /* Space from logout button */
+        }
+
+        .login-btn:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .logout-btn {
+            display: block;
+            width: 100%;
+            background-color: #dc3545;
+            /* Red color for logout */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px;
+            text-align: center;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main {
+            margin-left: 240px;
+            flex: 1;
+            transition: margin-left 0.3s ease;
+            padding: 40px;
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            /* Ensure it takes full height */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            /* Slightly less padding for internal pages */
+            background: linear-gradient(135deg, #e0f7fa 0%, #ffffff 100%);
+            border-bottom: 5px solid #007bff;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 L0,100 Z" fill="%23007bff" fill-opacity="0.03"/></svg>');
+            background-size: cover;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero img {
+            max-width: 150px;
+            /* Slightly smaller for internal pages */
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            border: 3px solid #007bff;
+            background: white;
+            padding: 5px;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            /* Slightly smaller */
+            color: #007bff;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #555;
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 500;
+        }
+
+        .content-area {
+            flex: 1;
+            /* Allows content to push footer down */
+        }
+
+        .data-table {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border-top: 3px solid #007bff;
+        }
+
+        .data-table h2 {
+            color: #007bff;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: #007bff;
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            font-size: 0.9rem;
+            position: relative;
+            margin-top: 40px;
+            /* Space above footer */
+        }
+
+        footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #00c6ff, #007bff);
+        }
+
+        footer p {
+            margin-bottom: 5px;
+        }
+
+        footer a {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        /* ===== MOBILE STYLES ===== */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1050;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .sidebar-toggle:hover {
+            background: #0069d9;
+            transform: scale(1.05);
+        }
+
+        .fa-chevron-down {
+            transition: transform 0.3s ease;
+        }
+
+        .fa-chevron-down.rotate {
+            transform: rotate(180deg);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar-toggle {
+                display: block;
+            }
+
+            .sidebar {
+                left: -240px;
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .main.shift {
+                margin-left: 240px;
+            }
+
+            .hero {
+                padding: 100px 20px 60px;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- No authentication check for Clinics page -->
+
+    <!-- Sidebar Toggle Button for Mobile -->
+    <button class="sidebar-toggle">
+        ☰
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-heartbeat"></i> TeleDoctor</h2>
+        </div>
+
+        <div class="sidebar-nav">
+            <a href="teledoctor.html" class="sidebar-item">
+                <i class="fas fa-home"></i> Home
+            </a>
+
+            <!-- Dashboard becomes a direct dropdown group -->
+            <div class="dropdown-btn active"> <!-- Active because Clinics is under Dashboard -->
+                <span>
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </span>
+                <i class="fas fa-chevron-down rotate"></i> <!-- Rotated because dropdown is open -->
+            </div>
+
+            <div class="dropdown-menu show"> <!-- Show because Clinics is under Dashboard -->
+                <a href="doctors.html" class="sidebar-item">
+                    <i class="fas fa-user-md"></i> Doctors
+                </a>
+                <a href="interpreters.html" class="sidebar-item">
+                    <i class="fas fa-language"></i> Interpreters
+                </a>
+                <a href="patients.html" class="sidebar-item">
+                    <i class="fas fa-users"></i> Patients
+                </a>
+                <a href="clinics.html" class="sidebar-item active">
+                    <i class="fas fa-clinic-medical"></i> Clinics
+                </a>
+            </div>
+
+            <!-- Pharmacies and Labs remain as direct items -->
+            <a href="pharmacies.html" class="sidebar-item">
+                <i class="fas fa-pills"></i> Pharmacies
+            </a>
+            <a href="labs.html" class="sidebar-item">
+                <i class="fas fa-flask"></i> Labs
+            </a>
+
+            <a href="about.html" class="sidebar-item">
+                <i class="fas fa-info-circle"></i> About Us
+            </a>
+
+            <a href="contact.html" class="sidebar-item">
+                <i class="fas fa-envelope"></i> Contact
+            </a>
+        </div>
+
+        <div class="sidebar-footer">
+            <a href="login.html" class="login-btn">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+        <div class="hero">
+            <div class="hero-content">
+                <img src="https://placehold.co/150x150/007bff/ffffff?text=Clinics" alt="Clinics Icon">
+                <h1>Our Partner Clinics</h1>
+                <p>Find the best healthcare facilities near you.</p>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <div class="data-table">
+                <h2>Clinic Directory</h2>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Clinic Name</th>
+                            <th>Address</th>
+                            <th>Contact</th>
+                            <th>Services</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Prime Health Clinic</td>
+                            <td>123 Wellness St, Addis Ababa</td>
+                            <td>+251 11 123 4567</td>
+                            <td>General Check-up, Vaccinations</td>
+                        </tr>
+                        <tr>
+                            <td>MedPrime Clinic</td>
+                            <td>456 Healing Blvd, Addis Ababa</td>
+                            <td>+251 11 765 4321</td>
+                            <td>Specialist Consultations, Diagnostics</td>
+                        </tr>
+                        <tr>
+                            <td>Hope Medical Center</td>
+                            <td>789 Care St, Addis Ababa</td>
+                            <td>+251 91 234 5678</td>
+                            <td>Emergency Care, Minor Surgeries</td>
+                        </tr>
+                        <tr>
+                            <td>Sunrise Clinic</td>
+                            <td>101 Sunshine Ave, Addis Ababa</td>
+                            <td>+251 92 987 6543</td>
+                            <td>Pediatrics, Women's Health</td>
+                        </tr>
+                        <tr>
+                            <td>Unity Polyclinic</td>
+                            <td>202 Unity Road, Addis Ababa</td>
+                            <td>+251 11 222 3344</td>
+                            <td>Dental, Eye Care</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 TeleDoctor. All rights reserved.</p>
+            <p>
+                <a href="#">Privacy Policy</a> |
+                <a href="#">Terms of Service</a> |
+                <a href="#">Contact Us</a>
+            </p>
+            <p class="mt-3">
+                <a href="#"><i class="fab fa-facebook mx-2"></i></a>
+                <a href="#"><i class="fab fa-twitter mx-2"></i></a>
+                <a href="#"><i class="fab fa-linkedin mx-2"></i></a>
+                <a href="#"><i class="fab fa-instagram mx-2"></i></a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Sidebar toggle functionality
+            const sidebarToggle = document.querySelector('.sidebar-toggle');
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main');
+
+            sidebarToggle.addEventListener('click', function () {
+                sidebar.classList.toggle('active');
+                mainContent.classList.toggle('shift');
+            });
+
+            // Dropdown menu functionality
+            const dropdownBtn = document.querySelector('.dropdown-btn');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+            const chevronIcon = dropdownBtn.querySelector('.fa-chevron-down');
+
+            dropdownBtn.addEventListener('click', function () {
+                dropdownMenu.classList.toggle('show');
+                chevronIcon.classList.toggle('rotate');
+            });
+
+            // Set active class for current page
+            const currentPath = window.location.pathname.split('/').pop();
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+            sidebarItems.forEach(item => {
+                const href = item.getAttribute('href');
+                if (href && href.includes(currentPath)) {
+                    item.classList.add('active');
+                    // If a dropdown item is active, also show its parent dropdown
+                    if (item.closest('.dropdown-menu')) {
+                        item.closest('.dropdown-menu').classList.add('show');
+                        item.closest('.dropdown-menu').previousElementSibling.querySelector('.fa-chevron-down').classList.add('rotate');
+                    }
+                }
+            });
+        });
+
+        function logout() {
+            localStorage.removeItem('loggedIn'); // Clear logged in status
+            window.location.href = window.location.origin + '/login.html'; // Redirect to login page
+        }
+    </script>
+</body>
+
+</html>

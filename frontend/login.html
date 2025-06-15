@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>TeleDoctor | Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #007bff 0%, #00c6ff 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      color: #333;
+    }
+
+    .login-container {
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .login-container h2 {
+      color: #007bff;
+      margin-bottom: 30px;
+      font-weight: 700;
+    }
+
+    .form-label {
+      font-weight: 500;
+      text-align: left;
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+    }
+
+    .form-control {
+      border-radius: 8px;
+      padding: 12px 15px;
+      font-size: 1rem;
+      border: 1px solid #ced4da;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-control:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+      border-radius: 8px;
+      padding: 12px 20px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+      width: 100%;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+      transform: translateY(-2px);
+    }
+
+    .alert-message {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      color: #721c24;
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      display: none;
+      /* Hidden by default */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-container">
+    <h2>TeleDoctor Login</h2>
+    <form id="loginForm">
+      <div class="mb-3 text-start">
+        <label for="username" class="form-label"><i class="fas fa-user"></i> Username</label>
+        <input type="text" class="form-control" id="username" placeholder="Enter your username" required>
+      </div>
+      <div class="mb-4 text-start">
+        <label for="password" class="form-label"><i class="fas fa-lock"></i> Password</label>
+        <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Login</button>
+      <div id="errorMessage" class="alert-message"></div>
+    </form>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function (event) {
+      event.preventDefault(); // Prevent default form submission
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const errorMessageDiv = document.getElementById('errorMessage');
+
+      // Simple hardcoded credentials for demonstration
+      if (username === 'admin' && password === 'password') {
+        localStorage.setItem('loggedIn', 'true');
+        // Redirect to doctors page on successful login using window.location.origin
+        window.location.href = window.location.origin + '/teledoctor.html'; // Redirect to home page
+      } else {
+        errorMessageDiv.textContent = 'Invalid username or password. Please try again.';
+        errorMessageDiv.style.display = 'block'; // Show error message
+      }
+    });
+  </script>
+</body>
+
+</html>
