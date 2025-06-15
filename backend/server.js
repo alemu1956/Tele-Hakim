@@ -1,43 +1,38 @@
 const express = require('express');
-const fs = require('fs');
-const https = require('https');
 const cors = require('cors');
 const multer = require('multer');
-const path = require('path');
+const fs = require('fs');
+const sqlite3 = require('sqlite3').verbose();
+const authRoutes = require('./authRoutes');
 
 const app = express();
+const upload = multer();
+const port = process.env.PORT || 3000;
+
+// Middleware
 app.use(cors());
 app.use(express.json());
+app.use(upload.array());
+app.use(express.urlencoded({ extended: true }));
 
-// Setup file storage for uploads
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/');
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname);
+// Routes
+app.use('/auth', authRoutes);
+
+// SQLite database
+const db = new sqlite3.Database('./backend/teleDoctor.db', (err) => {
+    if (err) {
+        console.error('Database opening error: ', err);
+    } else {
+        console.log('Connected to SQLite database');
     }
 });
-const upload = multer({ storage: storage });
 
-// Example route
+// Example API endpoint (you can add your own)
 app.get('/', (req, res) => {
-    res.send('TeleHakim backend running!');
+    res.send('TeleHakim backend is running!');
 });
 
-// Example file upload route
-app.post('/upload', upload.single('file'), (req, res) => {
-    res.json({ message: 'File uploaded successfully' });
-});
-
-// Load SSL certificates
-const serverOptions = {
-    key: fs.readFileSync(path.join(__dirname, '../192.168.1.170+2-key.pem')),
-    cert: fs.readFileSync(path.join(__dirname, '../192.168.1.170+2.pem'))
-};
-
-// Start HTTPS server
-const httpsServer = https.createServer(serverOptions, app);
-httpsServer.listen(8443, () => {
-    console.log('✅ Secure Backend Server running at https://localhost:8443');
+// Start the server
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });
