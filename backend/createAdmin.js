@@ -1,18 +1,26 @@
-const fs = require("fs");
-const bcrypt = require("bcrypt");
+const sqlite3 = require('sqlite3').verbose();
+const bcrypt = require('bcrypt');
 
-(async () => {
-  const hash = await bcrypt.hash("admin123", 10);
+const db = new sqlite3.Database('teleDoctor.db');
 
-  const admin = {
-    id: 1,
-    name: "Ministry Admin",
-    email: "admin@health.gov.et",
-    password: korrado,
-    role: "admin",
-    approved: true
-  };
+const username = 'ministryAdmin';
+const password = 'admin123';
+const role = 'admin';
 
-  fs.writeFileSync("users.json", JSON.stringify([admin], null, 2));
-  console.log("✅ Admin user recreated successfully.");
-})();
+bcrypt.hash(password, 10, (err, hash) => {
+    if (err) {
+        console.error('Error hashing password', err);
+        return;
+    }
+
+    db.run(`INSERT INTO users (username, password, role, approved) VALUES (?, ?, ?, 1)`,
+        [username, hash, role],
+        function (err) {
+            if (err) {
+                console.error('Admin already exists or error inserting', err);
+            } else {
+                console.log('Admin user created');
+            }
+            db.close();
+        });
+});

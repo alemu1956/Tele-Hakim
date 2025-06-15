@@ -1,5 +1,11 @@
+.env
+.env
+.env.save
 node_modules/
 uploads/
 teleDoctor.db
 *.pem
-ssl/
+*.key
+*.crt
+.DS_Store
+.vscode/
